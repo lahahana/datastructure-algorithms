@@ -31,25 +31,27 @@ public class Trie {
 	}
 
 	public Trie indexWord(String word) {
-		addNode(word, 0, word.length() - 1, this.root);
+		addNode(word, 0, word.length() - 1, this.root, true);
 		return this;
 	}
 
-	private void addNode(String word, int pos, int end, TrieNode node) {
+	private void addNode(String word, int pos, int end, TrieNode node, boolean isOld) {
 		char c = word.charAt(pos);
-		TrieNode[] childs = node.getChilds();
+		TrieNode[] childs = node.childs;
 		boolean isPrefixExists = false;
 		int index = -1;
-		for (int i = 0; i < childs.length; i++) {
-			TrieNode childNode = childs[i];
-			if (childNode != null) {
-				index = i;
-				if (childNode.getPrefix() == c) {
-					isPrefixExists = true;
+		if(isOld) {
+			for (int i = 0; i < childs.length; i++) {
+				TrieNode childNode = childs[i];
+				if (childNode != null) {
+					index = i;
+					if (childNode.prefix == c) {
+						isPrefixExists = true;
+						break;
+					}
+				} else {
 					break;
 				}
-			} else {
-				break;
 			}
 		}
 
@@ -57,19 +59,19 @@ public class Trie {
 			if (pos < end) {
 				TrieNode newNode = new TrieNode(c);
 				childs[index + 1] = newNode;
-				addNode(word, ++pos, end, newNode);
+				addNode(word, ++pos, end, newNode, false);
 			} else {
-				TrieNode node2 = new TrieNode(c, word);
-				childs[index + 1] = node2;
+				TrieNode newNode = new TrieNode(c, true);
+				childs[index + 1] = newNode;
 				counter++;
 				return;
 			}
 		} else {
 			if (pos < end) {
-				addNode(word, ++pos, end, childs[index]);
+				addNode(word, ++pos, end, childs[index], true);
 			} else {
-				if(!word.equals(childs[index].getVal())){
-					childs[index].setVal(word);
+				if(!childs[index].exists){
+					childs[index].exists = true;
 					counter++;
 					return;
 				}
@@ -78,20 +80,20 @@ public class Trie {
 	}
 
 	public boolean isWordExists(String word) {
-		TrieNode[] childs = root.getChilds();
+		TrieNode[] childs = root.childs;
 		for (int i = 0; i < word.length(); i++) {
 			char c = word.charAt(i);
 			for (int j = 0; j < childs.length; j++) {
 				if(childs[j] == null)
 					return false;
-				else if(childs[j].getPrefix() == c){
+				else if(childs[j].prefix == c){
 					if(i == word.length() - 1){
-						if(word.equals(childs[j].getVal()))
+						if(childs[j].exists)
 							return true;
 						else
 							return false;
 					}
-					childs = childs[j].getChilds();
+					childs = childs[j].childs;
 					break;
 				}
 			}
@@ -102,43 +104,27 @@ public class Trie {
 	private class TrieNode {
 		
 		private char prefix;
-		private String val;
+		private boolean exists;
 		private TrieNode[] childs;
 
 		public TrieNode() {
 			super();
-			val = null;
-			childs = new TrieNode[SYMBOLSIZE];
+			this.exists = false;
+			this.childs = new TrieNode[SYMBOLSIZE];
 		}
 
 		public TrieNode(char prefix) {
 			super();
 			this.prefix = prefix;
-			val = null;
-			childs = new TrieNode[SYMBOLSIZE];
+			this.exists = false;
+			this.childs = new TrieNode[SYMBOLSIZE];
 		}
 
-		public TrieNode(char prefix, String val) {
+		public TrieNode(char prefix, boolean exists) {
 			super();
 			this.prefix = prefix;
-			this.val = val;
-			childs = new TrieNode[SYMBOLSIZE];
-		}
-
-		public char getPrefix() {
-			return prefix;
-		}
-
-		public String getVal() {
-			return val;
-		}
-
-		public void setVal(String val) {
-			this.val = val;
-		}
-
-		public TrieNode[] getChilds() {
-			return childs;
+			this.exists = exists;
+			this.childs = new TrieNode[SYMBOLSIZE];
 		}
 	}
 }
