@@ -2,6 +2,7 @@
 package com.github.lahahana.dsa;
 
 /**
+* Performence enhence for traditional quick sort 
 * @author lahahana
 */
 public class QQuickSort {
