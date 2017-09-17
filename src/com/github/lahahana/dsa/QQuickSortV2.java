@@ -1,8 +1,12 @@
-/**
-* @author lahahana
-*/
+
 package com.github.lahahana.dsa;
 
+
+/**
+* Repeat Element Array enhence based on QQuickSort 
+* 
+* @author lahahana
+*/
 public class QQuickSortV2 {
 	
 	private static final int INSERT_THRESHOLD = 8;
@@ -14,7 +18,6 @@ public class QQuickSortV2 {
 			arr[i] = (int) (Math.random() * 10000 + 1);
 //			arr[i] = 10;
 		}
-//		int[] arr = {2,3,3,2,6,8,4,1,1,1,1,5,1,1,11,1,1,1,1,11,};
 		long s = System.currentTimeMillis();
 		qsort(arr);
 		System.out.println("Cost:" + (System.currentTimeMillis() - s));

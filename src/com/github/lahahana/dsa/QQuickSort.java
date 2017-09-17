@@ -1,8 +1,9 @@
+
+package com.github.lahahana.dsa;
+
 /**
 * @author lahahana
 */
-package com.github.lahahana.dsa;
-
 public class QQuickSort {
 	
 	private static final int INSERT_THRESHOLD = 8;

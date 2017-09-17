@@ -1,11 +1,15 @@
-/**
-* @author lahahana
-*/
+
 package com.github.lahahana.dsa;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+
+/**
+* BitMap Strucutre 
+* 
+* @author lahahana
+*/
 public class BitMap {
 	
 	private int[] arr;
